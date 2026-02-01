@@ -48,7 +48,15 @@ java -jar target/docker-java-app-1.0-SNAPSHOT.jar
 
 ## Building and Running with Docker
 
-### Build Docker Image
+### Build Steps
+
+1. First, build the JAR file with Maven:
+
+```bash
+mvn clean package
+```
+
+2. Then, build the Docker image:
 
 ```bash
 docker build -t docker-java-app .
@@ -68,12 +76,12 @@ docker run --rm docker-java-app arg1 arg2 arg3
 
 ## Docker Image Details
 
-The Dockerfile uses a multi-stage build:
+The Dockerfile uses a lightweight `eclipse-temurin:11-jre-alpine` image containing only the Java Runtime Environment (JRE).
 
-1. **Build Stage**: Uses `maven:3.9-eclipse-temurin-11` to compile and package the application
-2. **Runtime Stage**: Uses lightweight `eclipse-temurin:11-jre-alpine` image containing only the JRE
-
-This approach minimizes the final image size by excluding build tools and dependencies from the runtime image.
+The build process is simple:
+1. Build the JAR locally using Maven
+2. Copy the pre-built JAR into the Docker image
+3. Use the Alpine-based JRE image for a minimal footprint
 
 ## Output Example
 
