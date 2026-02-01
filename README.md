@@ -197,6 +197,11 @@ develop:
 
 docker compose watch
 
+    ports:
+      - 5431:5432
+
+Host:Guest
+
 ## Maven
 
 dependency:go-offline - A Maven goal that downloads all dependencies, plugins, and other artifacts your project needs so you can build it later without an internet connection
