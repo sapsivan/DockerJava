@@ -202,6 +202,10 @@ docker compose watch
 
 Host:Guest
 
+Next, you added a new test stage labeled test based on the base stage. In this stage you copied in the necessary source files and then specified RUN to run ./mvnw test. Instead of using CMD, you used RUN to run the tests. The reason is that the CMD instruction runs when the container runs, and the RUN instruction runs when the image is being built. When using RUN, the build will fail if the tests fail.
+
+docker build -t java-docker-image-test --progress=plain --no-cache --target=test .
+
 ## Maven
 
 dependency:go-offline - A Maven goal that downloads all dependencies, plugins, and other artifacts your project needs so you can build it later without an internet connection
