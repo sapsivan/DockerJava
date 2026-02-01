@@ -1,11 +1,11 @@
 # DockerJava
 
-A simple Java application demonstrating Docker containerization using Maven and multi-stage Docker builds.
+A simple Java application demonstrating Docker containerization using Maven.
 
 ## Features
 
 - Simple Java application built with Maven
-- Multi-stage Dockerfile for optimized image size
+- Lightweight Dockerfile using Alpine-based JRE image
 - Alpine-based runtime image for minimal footprint
 - Java 11 compatibility
 
