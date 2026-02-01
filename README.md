@@ -173,6 +173,163 @@ For additional details, please refer to the blog post [Hello DCO, Goodbye CLA: S
 
 The Spring PetClinic sample application is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
 
-##Docker
+## Docker
 
 docker compose up --build
+https://hub.docker.com/_/postgres?_gl=1*poz9xb*_gcl_au*MTY0OTk4NjA0Ny4xNzY5ODM3NjU3*_ga*MTEzMjM0MTM1MS4xNzY5ODM3NjU2*_ga_XJWPQMJYHQ*czE3Njk5NzE1MjIkbzckZzEkdDE3Njk5NzE1MjMkajU5JGwwJGgw
+
+Java spring profiles. spring-petclinic/src/resources/db/postgres/petclinic_db_setup_postgres.txt
+
+RUN --mount=type=bind,source=pom.xml,target=pom.xml \
+ --mount=type=cache,target=/root/.m2 ./mvnw dependency:go-offline -DskipTests
+
+environment: - POSTGRES_URL=jdbc:postgresql://db:5432/petclinic
+
+Automatically update services
+Use Compose Watch to automatically update your running Compose services as you edit and save your code. For more details about Compose Watch, see Use Compose Watch.
+
+```yaml
+develop:
+  watch:
+    - action: rebuild
+      path: .
+```
+
+docker compose watch
+
+## Maven
+
+dependency:go-offline - A Maven goal that downloads all dependencies, plugins, and other artifacts your project needs so you can build it later without an internet connection
+
+Maven goals are specific tasks that Maven can execute. They're the fundamental units of work in Maven's build lifecycle.
+
+## Structure
+
+Goals follow the format: `plugin:goal` (e.g., `compiler:compile`, `dependency:tree`)
+
+## Common Maven Goals
+
+**Compilation & Building:**
+
+- `compile` - Compiles source code
+- `test-compile` - Compiles test source code
+- `package` - Creates JAR/WAR file
+- `install` - Installs package to local repository
+- `deploy` - Deploys package to remote repository
+- `clean` - Removes target directory
+
+**Testing:**
+
+- `test` - Runs unit tests
+- `surefire:test` - Runs tests using Surefire plugin
+- `verify` - Runs integration tests
+
+**Dependency Management:**
+
+- `dependency:tree` - Shows dependency hierarchy
+- `dependency:analyze` - Analyzes dependencies for unused/undeclared ones
+- `dependency:resolve` - Resolves all dependencies
+- `dependency:go-offline` - Downloads dependencies for offline use
+- `dependency:copy-dependencies` - Copies dependencies to a directory
+
+**Information & Analysis:**
+
+- `help:describe` - Describes plugin goals
+- `versions:display-dependency-updates` - Shows available dependency updates
+- `versions:display-plugin-updates` - Shows available plugin updates
+- `site` - Generates project documentation
+
+**Spring Boot Specific:**
+
+- `spring-boot:run` - Runs Spring Boot application
+- `spring-boot:build-image` - Creates container image
+
+## Lifecycle Phases vs Goals
+
+**Phases** are sequential stages in the build lifecycle (like `compile`, `test`, `package`). When you run a phase, Maven executes all preceding phases plus goals bound to that phase.
+
+**Goals** are specific tasks that can be executed independently or bound to phases.
+
+Example: `mvn clean install` runs the clean phase, then all phases up to and including install.
+
+Maven phases are sequential stages in the build lifecycle. When you run a phase, Maven automatically executes all previous phases in order.
+
+## Three Built-in Lifecycles
+
+Maven has three independent lifecycles:
+
+1. **default** - handles project deployment
+2. **clean** - handles project cleaning
+3. **site** - handles project documentation
+
+## Default Lifecycle Phases (most commonly used)
+
+Executed in this order:
+
+1. **`validate`** - Validates project structure and configuration
+2. **`compile`** - Compiles source code (src/main/java)
+3. **`test`** - Runs unit tests using test framework (JUnit, TestNG)
+4. **`package`** - Packages compiled code into distributable format (JAR, WAR)
+5. **`verify`** - Runs checks and integration tests to verify package quality
+6. **`install`** - Installs package to local Maven repository (~/.m2/repository)
+7. **`deploy`** - Copies package to remote repository for sharing
+
+**Other phases in default lifecycle:**
+
+- `initialize` - Initializes build state
+- `generate-sources` - Generates source code for compilation
+- `process-sources` - Processes source code
+- `generate-resources` - Generates resources for packaging
+- `process-resources` - Copies and processes resources to target
+- `process-classes` - Post-processes compiled classes
+- `test-compile` - Compiles test source code
+- `process-test-resources` - Copies and processes test resources
+- `prepare-package` - Performs operations before packaging
+- `integration-test` - Processes and deploys package for integration tests
+- `post-integration-test` - Performs cleanup after integration tests
+
+## Clean Lifecycle Phases
+
+1. **`pre-clean`** - Executes processes before cleaning
+2. **`clean`** - Removes files from previous builds (deletes target/ directory)
+3. **`post-clean`** - Executes processes after cleaning
+
+## Site Lifecycle Phases
+
+1. **`pre-site`** - Executes processes before site generation
+2. **`site`** - Generates project documentation
+3. **`post-site`** - Executes processes after site generation
+4. **`site-deploy`** - Deploys generated site to web server
+
+## Phase Execution Examples
+
+```bash
+# Runs: validate → compile → test → package
+mvn package
+
+# Runs: clean, then validate → compile → test → package → install
+mvn clean install
+
+# Runs only: validate → compile → test
+mvn test
+
+# Runs: clean, then validate → compile → test → package → verify → install → deploy
+mvn clean deploy
+```
+
+## Key Concepts
+
+**Sequential execution**: Running `mvn install` automatically runs validate, compile, test, package, verify, and install in that order.
+
+**Skip phases**: You can't skip intermediate phases, but you can skip goals:
+
+```bash
+mvn install -DskipTests  # Skips test execution but compiles tests
+mvn install -Dmaven.test.skip=true  # Skips test compilation and execution
+```
+
+**Multiple lifecycles**: Clean and default are independent:
+
+```bash
+mvn clean package  # Runs clean lifecycle, then default up to package
+```
